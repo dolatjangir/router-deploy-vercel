@@ -1,26 +1,38 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="buttons">  <button class="pages">
+      <router-link to="/login">Login Page</router-link></button>
+      <button class="pages">
+      <router-link to="/signUp">Sign Up Page</router-link></button>
+      <button class="pages">
+    <router-link to="/weather">check weather</router-link>
+  </button >
+   
+  </div>
+  <router-view></router-view>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
+
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.buttons{
+  background-color: bisque;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content:flex-start;
+  align-items: center;
+  padding: 10px;
+  gap: 5px;
+}
+.pages{
+
+  width: 200px;
+  height: 70px;
+  font-size: x-large;
+  
 }
 </style>
