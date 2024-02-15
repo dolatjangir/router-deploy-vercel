@@ -296,4 +296,30 @@ background: #fff;
     color: rgba(140, 117, 105, 0.8);
   }
 
+  @media only screen and (max-width:445px) {
+.modal-container{
+  /* max-width: 220px; */
+  display: flex;
+  justify-content: center;
+}
+.modal-left{
+  padding: 10px 10px 10px 10px;
+}
+.input-block{
+  width: 200px;
+}
+.input-button{
+  padding: 0.7rem 1.2rem;
+}
+form{
+  display: flex;
+  flex-direction: column;
+ 
+  align-items: center;
+}
+.sign-up{
+  padding-top: 5px;
+  font-weight: 200;
+}
+} 
 </style>

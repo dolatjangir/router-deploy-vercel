@@ -222,4 +222,14 @@ h1 {
     text-decoration: underline;
 
 }
+@media only screen and (max-width:400px){
+    .container{
+        padding: 10px;
+    }
+    .remember_forgot a{
+        position: relative;
+        left: 15px;
+       
+    }
+}
 </style>
