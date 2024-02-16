@@ -199,7 +199,64 @@ export default {
     margin-top: -6px;
 }
 
-/* .humidity-name{
-margin-top: 33px;
-} */
+
+@media only screen and (max-width:498px){
+        .card{
+            padding: 39px 27px;
+            position: relative;
+        }
+        .search{
+        display: flex;
+        flex-shrink: initial;
+        }
+       .col {
+       font-size: 50%;
+    }
+    .details{
+        flex-shrink:initial;
+        font-size: 50%;
+        padding: 0 10px;
+    }
+    .search input{
+        margin-right: -50px;
+        font-size: 10px;
+    }
+    .search{
+        /* flex-wrap: wrap; */
+       
+        border-radius: 10px;
+        /* gap: 0; */
+
+    }
+    .col{
+        position: relative;
+        right: 10px;
+        display: flex;
+        flex-direction: column;
+         
+    }
+    .col img{
+        padding: 8px 0px ;
+        width: 25px;
+    }
+    .humidity ,.wind{
+        font-size: 26px;
+        
+    }
+    /* .only-wind{
+        position: relative;
+        right: 20px;
+    } */
+    .weather h1{
+        font-size: 30px;
+    }
+    .humidity-name, .wind-name{
+        font-size:16px ;
+    }
+    .weather-icon {
+        width: 140px;
+        margin-top: 30px;
+    
+    }
+}
 </style>
