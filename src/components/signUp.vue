@@ -1,8 +1,8 @@
 <template>
 <wrapper>
       <div className='conainerr'>
-        
-       <p>{{ this.message }}</p>
+        <p>{{ this.message }}</p> 
+        <!--<p>{{ this.error }}</p> -->
         <div className='modal'>
           <div className='modal-container'>
             <div className='modal-left'>
@@ -11,11 +11,11 @@
                 to the GYM Freak website for trained your body .
 
               </p>
-              <form>
+              <Form @submit="handleValue" :validation-schema="schema" v-slot="{errors}">
                 <div className='input-block'>
                   <lable htmlFor='name' className='input-lable'>First-name
                   </lable>
-                  <input
+                  <Field
                   type='name'
                   autoComplete='off'
                   name="name"
@@ -24,12 +24,13 @@
                   v-model.lazy="form.name"
                  
                   />
+                  <div class="invalid-feedback">{{ errors.name }}</div>
                 </div>
 
                 <div className='input-block'>
                   <lable htmlFor='last_name' className='input-lable'>Last-name
                   </lable>
-                  <input
+                  <Field
                   type='last_name'
                   autoComplete='off'
                   name="last_name"
@@ -38,12 +39,13 @@
                   v-model.lazy="form.last_name"
                  
                   />
+                  <div class="invalid-feedback">{{ errors.last_name }}</div>
                 </div>
 
                 <div className='input-block'>
                   <lable htmlFor='email' className='input-lable'>Email
                   </lable>
-                  <input
+                  <Field
                   type='email'
                   autoComplete='off'
                   name="email"
@@ -51,13 +53,13 @@
                   placeholder='Email'
                   v-model.lazy="form.email"
                   />
-                 
+                  <div class="invalid-feedback">{{ errors.email }}</div>
                 </div>
-
+                
                 <div className='input-block'>
                   <lable htmlFor='password' className='input-lable'>Password
                   </lable>
-                  <input
+                  <Field
                   type='password'
                   autoComplete='off'
                   name="password"
@@ -66,34 +68,42 @@
                   v-model.lazy="form.password"
                  
                   />
+                  <div class="invalid-feedback">{{ errors.password }}</div>
                 </div>
 
                 <div className='input-block'>
                   <lable htmlFor='password' className='input-lable'>Confirm-Password
                   </lable>
-                  <input
+                  <Field
                   type='password'
                   autoComplete='off'
                   name="Confirm_Password"
                   id='Confirm_Password  '
                   placeholder='Confirm-Password'
-                  v-model.lazy="form.Confirm_password"
+                  v-model.lazy="form.Confirm_Password"
                  
                   />
+                  <div class="invalid-feedback">{{ errors.Confirm_Password }}</div>
                 </div>
+                <span v-if="password!==''&&Confirm_Password!==''&&password!==Confirm_Password">password</span>
+                
+             
+ 
                 <div className='modal-buttons'>
                 <a href='#' className=''>
                   Thanks for register!
                 </a>
-                <button className='input-button' type='submit' v-on:click="handleValue">
+                <button className='input-button' type='submit'>
                   Registration
                 </button>
                 </div>
-              </form>
+                <span v-if="password!=='' && Confirm_Password!=='' && password !== Confirm_Password ">Password is not match</span>
+
+              </Form>
               <p className='sign-up'>
                 <router-link to="/login">Already have an account?</router-link>
               </p>
-              <p>{{ this.form.name }}</p>
+            
             </div>
           </div>
 
@@ -102,31 +112,50 @@
     </wrapper>
 </template>
 <script>
+import {Form,Field} from 'vee-validate'
+import * as yup from"yup"
     import axios from 'axios'
 export default{
 
     data(){
+      const schema = yup.object().shape({
+       name: yup.string().required(),
+        last_name: yup.string().required(),
+        email: yup.string().required().email("email is not valid"),
+        password: yup.string().required().min(6),
+        Confirm_Password: yup.string().required(),
+
+      });
+      
         return{
+          schema,
          form:  { name: "",
     last_name:"",
     email: "",
     password: "",
-    Confirm_password: "",},
-    error:[],
+    Confirm_Password: "",},
+    
     message:''
         }
+    },
+    components:{
+      Form,
+      Field
+    },
+    watch:{
+      password(newValue){
+              // Automatically clear confirm password if password changes
+        if (newValue !== this.Confirm_Password){
+          this.Confirm_Password=""
+        }
+      }
     },
     
     methods:{
       
         handleValue(e) {
       
-            this.error = [];
-            for (const item in this.form){
-                if(this.form[item]===null || this.form[item].length===0){
-                   this.error.push(`${item} not valid`)
-                }
-            }
+      console.log("submmited")
             // if(this.error.length == 0){
             //     console.log("form submmited")
             // }
@@ -296,6 +325,10 @@ background: #fff;
     color: rgba(140, 117, 105, 0.8);
   }
 
+  .invalid-feedback{
+    font-size: small;
+    color: rgb(247, 114, 114);
+  }
   @media only screen and (max-width:445px) {
 .modal-container{
   /* max-width: 220px; */

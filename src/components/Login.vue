@@ -2,22 +2,39 @@
 
 <div className='container'>
     <p>{{ this.message }}</p>
-    <ul><li v-for="item in error" v-bind:key="item">
-    {{ item  }}
-    </li></ul>
+  
+            <Form v-on:submit="handleValue" :validation-schema="schema" v-slot="{errors}">
+
     <div className='container1'>
         <h1>Login</h1>
         <div className='input_box'>
 
-            <input type='email' name='email' id='email' autoComplete='off' placeholder='Enter your Email' v-model.lazy="form.email" />
+            <Field type='email'
+             name='email'
+              id='email'
+               autoComplete='off'
+                placeholder='Enter your Email'
+                 v-model.lazy="form.email" />
+                 <div class="invalid-feedback">{{ errors.email }}</div> 
             <i className='bx bxs-user'></i>
+            
         </div>
 
         <div className='input_box'>
-
-            <input type='password' name='password' id='password' placeholder='Password' autoComplete='off' v-model.lazy="form.password" v-on:change="handlepassword()" />
+            
+            <Field type='password'
+             name='password'
+              id='password'
+               placeholder='Password'
+                autoComplete='off'
+                 v-model.lazy="form.password"  />
+                   <div class="invalid-feedback">{{ errors.password }}</div>
             <i className='bx bxs-lock-alt'></i>
+          
+           
         </div>
+        
+    
         <div className='remember_forgot'>   
             <label for="checkbox"><input type='checkbox' v-model="form.checkbox" value="remembered" id="checkbox" />Remember me</label>
             <!-- in below input field we take "name" attribute same for check only one value -->
@@ -25,21 +42,27 @@
             <input type='radio' value="devloper" name="who" v-model="form.who" id="devloper" /><label for="devloper">devloper</label> -->
             <a href="forgot">Forgot Password?</a>
         </div>
-        <button type='submit' v-on:click="handleValue"> Login</button>
+        <button type='submit' > Login</button>
         <div className='register_link'>
             <p>Don't have an account?<a href='/signin'><router-link to="/signUP">Register</router-link></a></p>
         </div>
     </div>
+    </Form>
 </div>
 </template>
 
 <script>
 import axios from 'axios';
-// import {useRoute} from 'vue-router'
+import * as yup from 'yup'
+import {Form,Field} from 'vee-validate'
 export default {
     data() {
+        const schema = yup.object().shape({
+            email:yup.string().required("Email is a required field").email("email is not valid"),
+            password:yup.string().required("Password is a required field").min(6)
+        });
         return {
-
+            schema,
         form: {
             email: "",
             password: "",
@@ -55,25 +78,18 @@ export default {
         }
         
     },
-    error:[],
+    
+    
+    components:{
+        Form,
+        Field
+    },
 
-    //for dynamic routing
-    // mounted(){
-    //     const route=useRoute();
-    //     console.warn("Route",route.params.name)
-    //     this.profile = route.params.name;
-    // },
+    
     methods: {
         handleValue() {
-            this.error = [];
-            for (const item in this.form){
-                if(this.form[item]===null || this.form[item].length===0){
-                   this.error.push(`${item} is Empty`)
-                }
-            }
-            // if(this.error.length == 0){
-            //     alert("form submmited")
-            // }
+            console.log("this is a handle value")
+           
                 
            
            this.addLoginInfo()
@@ -83,18 +99,12 @@ export default {
 
         },
 
-        handlepassword(){
-            this.error = []
-            if (this.form["password"].length < 6) {
-                this.error.push("Password should be minimum 6 characters")
-                return 
-           }            
-        },
+    
      async   addLoginInfo(){
             let result =await axios.get('http://20.193.142.95:8000/user/login')
             this.addInfo = result.data.payload
             this.message = result.data.message
-            console.warn(result)
+            console.warn(result.data.message)
         }
 
     },
@@ -120,6 +130,10 @@ export default {
     background-position: center;
 }
 
+.invalid-feedback{
+    position: relative;
+    left: 15px;
+}
 .container1 {
     width: 420px;
     background: transparent;
