@@ -1,8 +1,8 @@
 <template>
 <wrapper>
       <div className='conainerr'>
-        <!-- <p>{{ this.message }}</p> 
-       <p>{{ this.error }}</p> -->
+        <p>{{ this.message }}</p> 
+        <!--<p>{{ this.error }}</p> -->
         <div className='modal'>
           <div className='modal-container'>
             <div className='modal-left'>
@@ -114,7 +114,7 @@
 <script>
 import {Form,Field} from 'vee-validate'
 import * as yup from"yup"
-    // import axios from 'axios'
+    import axios from 'axios'
 export default{
 
     data(){
@@ -159,23 +159,23 @@ export default{
             // if(this.error.length == 0){
             //     console.log("form submmited")
             // }
-            // this.addApi()
+            this.addApi()
             // console.log(this.form ,this.error)
             e.preventDefault();
 
         },
-    //     async addApi(){
-    //   await axios.post('http://20.193.142.95:8000/user/signup',{
-    //        firstName:this.form.name,
-    //        lastName:this.form.last_name,
-    //        email:this.form.email,
-    //        password:this.form.password
-    //    } )
-    //    .catch(error => {
-    //                 this.message = 'Error updating data: ' + error.message;
-    //             });
+        async addApi(){
+      await axios.post('http://20.193.142.95:8000/user/signup',{
+           firstName:this.form.name,
+           lastName:this.form.last_name,
+           email:this.form.email,
+           password:this.form.password
+       } )
+       .catch(error => {
+                    this.message = 'Error updating data: ' + error.message;
+                });
       
-    //  }
+     }
 
     },
  
