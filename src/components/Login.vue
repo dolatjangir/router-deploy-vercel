@@ -3,9 +3,10 @@
 <div className='container'>
     <p>{{ this.message }}</p>
   
-            <Form v-on:submit="handleValue" :validation-schema="schema" v-slot="{errors}">
+          
 
     <div className='container1'>
+        <Form v-on:submit="handleValue" :validation-schema="schema" v-slot="{errors}">
         <h1>Login</h1>
         <div className='input_box'>
 
@@ -46,8 +47,9 @@
         <div className='register_link'>
             <p>Don't have an account?<a href='/signin'><router-link to="/signUP">Register</router-link></a></p>
         </div>
-    </div>
     </Form>
+    </div>
+  
 </div>
 </template>
 
