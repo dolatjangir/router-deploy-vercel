@@ -3,7 +3,10 @@
     <div class="search">
         <input type="text" v-model.lazy="city" placeholder="search your city" />
         <button v-on:click="weatherSearch"><img src="../assets/search.png" /></button>
+        
     </div>
+    <p class="cityName-error">{{ this.error }}</p>
+    <p class="cityName-error">{{ this.message }}</p>
     <div class="weather">
         <!-- <img src="../assets/clear.png" class="weather-icon" /> -->
         <div v-if="this.sky == 'Clouds'">
@@ -25,7 +28,7 @@
             <img src='../assets/clear.png' class="weather-icon" />
         </div>
 
-        <h1 class="temp">{{ this.store.temp }}°C</h1>
+        <h1 class="temp">{{ this.result }}°C</h1>
         <h2 class="city">{{ this.city }}</h2>
         <div class="details">
             <div class="col">
@@ -58,30 +61,61 @@ export default {
             cloud: [],
             sky: "",
             city: "",
+            error:"",
+            temp:'',
+            result:'',
+            cityApiName:"",
+            message:""
+        
 
         }
     },
     methods: {
+       
+        
         weatherSearch() {
+            this.result = this.temp.toFixed(2)
             // console.log(this.city)
+            
+            this.error=""
+            if(this.city.length==0 || this.city == null  ){
+                   this.error=("enter a specific city name" )
+                   return
+                }
+
+                
+               
+               
             this.displayWeatherContent(this.city)
+            return
+            // this.cityNameError()
+            
         },
         async displayWeatherContent(cityName = 'jhunjhunu') {
             let Weather = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=b3cbd07f0d647632c4a605e665a22ccb`)
+            .catch(()=>{
+                this.message ="city name don't found"
+            }); 
             this.store = Weather.data.main;
             // this.cloud = Weather.data.clouds
             this.sky = Weather.data.weather[0].main
-
+            this.temp = Weather.data.main.temp-273.15
             this.cloud = Weather.data.wind
+            this.cityApiName = Weather.data.name
             // console.warn( this.cloud.speed)
-            console.warn(Weather.data)
-        }
+           
+                
+        },
+
 
     },
     mounted() {
+       
         this.displayWeatherContent()
+       
 
     }
+    
 
 }
 </script>
@@ -198,6 +232,10 @@ export default {
     font-size: 28px;
     margin-top: -6px;
 }
+.cityName-error{
+color: rgb(211, 67, 67);
+font-variant: small-caps;
+}
 
 
 @media only screen and (max-width:498px){
@@ -226,6 +264,16 @@ export default {
        
         border-radius: 10px;
         /* gap: 0; */
+
+    }
+    .search input::placeholder{
+        font-weight: 400;
+        font-size: medium;
+    }
+    .search button{
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #00feba, #5b548a);
 
     }
     .col{
